@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>::-webkit-scrollbar { display: none;}
+        body { font-family: 'Inter', sans-serif; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        @keyframes eventPulse {
+            0%, 100% { opacity: 0.8; transform: scale(1) translateY(0); }
+            50% { opacity: 1; transform: scale(1.05) translateY(-5px); }
+        }
+        
+        @keyframes energySurge {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes wildBeastRoam {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(10px) rotate(5deg); }
+            75% { transform: translateX(-10px) rotate(-5deg); }
+        }
+        
+        @keyframes forgeStorm {
+            0%, 100% { filter: brightness(1) hue-rotate(0deg); }
+            33% { filter: brightness(1.2) hue-rotate(120deg); }
+            66% { filter: brightness(0.8) hue-rotate(240deg); }
+        }
+        
+        @keyframes countdown {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes arenaGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(236, 72, 153, 0.5); }
+        }
+        
+        .event-pulse {
+            animation: eventPulse 2s ease-in-out infinite;
+        }
+        
+        .energy-surge {
+            background: linear-gradient(-45deg, #8b5cf6, #ec4899, #06b6d4, #10b981);
+            background-size: 400% 400%;
+            animation: energySurge 1.5s ease infinite;
+        }
+        
+        .wild-beast {
+            animation: wildBeastRoam 3s ease-in-out infinite;
+        }
+        
+        .forge-storm {
+            animation: forgeStorm 2s ease-in-out infinite;
+        }
+        
+        .countdown-anim {
+            animation: countdown 1s ease-in-out infinite;
+        }
+        
+        .arena-glow {
+            animation: arenaGlow 3s ease-in-out infinite;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8b5cf6',
+                        secondary: '#ec4899',
+                        dark: '#0f0a1f',
+                        'dark-light': '#1a1332'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-b from-dark via-purple-950 to-dark text-white overflow-hidden">
+    
+    <div id="battle-screen" class="relative w-full h-screen flex flex-col">
+        
+        <div id="background-effects" class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl opacity-20"></div>
+            <div class="absolute bottom-32 right-10 w-40 h-40 bg-pink-500 rounded-full blur-3xl opacity-20"></div>
+            <div class="absolute top-1/3 right-1/4 w-24 h-24 bg-violet-500 rounded-full blur-2xl opacity-15"></div>
+        </div>
+
+        <div id="header" class="relative z-20 pt-12 px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg overflow-hidden border-2 border-purple-500">
+                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="You" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-16 h-2 bg-black/30 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <span class="orbitron text-xs font-bold text-green-400">750</span>
+                    </div>
+                </div>
+                
+                <div class="orbitron text-xs font-bold tracking-wider text-purple-300">2:34</div>
+                
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <span class="orbitron text-xs font-bold text-pink-400">892</span>
+                        <div class="w-16 h-2 bg-black/30 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-pink-400 to-pink-500 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 rounded-lg overflow-hidden border-2 border-pink-500">
+                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Opponent" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="event-notification" class="relative z-30 mx-4 mt-3">
+            <div class="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 backdrop-blur-sm rounded-xl p-3 border border-cyan-500/30 event-pulse">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center energy-surge">
+                        <i class="fa-solid fa-bolt text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="orbitron text-xs font-bold text-cyan-300 mb-1">ENERGY SURGE ACTIVE</div>
+                        <div class="text-xs text-gray-300">Double energy regeneration for all units</div>
+                    </div>
+                    <div class="orbitron text-sm font-bold text-cyan-400 countdown-anim">7s</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="battle-arena" class="relative z-10 flex-1 mx-4 mt-4 mb-4">
+            <div class="w-full h-full bg-gradient-to-b from-purple-900/20 to-pink-900/20 backdrop-blur-sm rounded-2xl border border-purple-500/30 arena-glow overflow-hidden">
+                
+                <div id="arena-zones" class="h-full grid grid-rows-3 gap-1 p-2">
+                    
+                    <div id="opponent-zone" class="bg-gradient-to-b from-pink-600/10 to-pink-700/20 rounded-xl border border-pink-500/20 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-pink-500/10 to-transparent"></div>
+                        <div class="relative h-full flex items-center justify-around p-2">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                                <i class="fa-solid fa-fire text-white text-xs"></i>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                                <i class="fa-solid fa-droplet text-white text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="neutral-zone" class="bg-gradient-to-b from-yellow-600/10 to-orange-600/20 rounded-xl border border-yellow-500/20 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/10 to-transparent"></div>
+                        <div class="relative h-full flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center wild-beast border-2 border-yellow-400/50">
+                                <i class="fa-solid fa-dragon text-white"></i>
+                            </div>
+                        </div>
+                        <div class="absolute top-1 right-2 orbitron text-xs font-bold text-yellow-400">WILD BEAST</div>
+                    </div>
+
+                    <div id="player-zone" class="bg-gradient-to-b from-purple-600/10 to-purple-700/20 rounded-xl border border-purple-500/20 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent"></div>
+                        <div class="relative h-full flex items-center justify-around p-2">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+                                <i class="fa-solid fa-mountain text-white text-xs"></i>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
+                                <i class="fa-solid fa-wind text-white text-xs"></i>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                                <i class="fa-solid fa-fire text-white text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="energy-bar" class="relative z-20 mx-4 mb-3">
+            <div class="bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-purple-500/20">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="orbitron text-xs font-bold text-purple-300">ENERGY</span>
+                    <span class="orbitron text-sm font-bold text-purple-400">8/10</span>
+                </div>
+                <div class="h-3 bg-black/50 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full relative" style="width: 80%">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="hand-cards" class="relative z-20 px-4 pb-6">
+            <div class="flex items-center justify-center gap-2">
+                
+                <div class="w-16 h-20 bg-gradient-to-br from-red-600/20 to-red-700/30 backdrop-blur-sm rounded-xl border border-red-500/30 flex flex-col items-center justify-center relative">
+                    <i class="fa-solid fa-fire text-red-400 text-lg mb-1"></i>
+                    <div class="orbitron text-xs font-bold text-red-300">3</div>
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                        <span class="text-xs font-bold text-white">2</span>
+                    </div>
+                </div>
+
+                <div class="w-16 h-20 bg-gradient-to-br from-blue-600/20 to-blue-700/30 backdrop-blur-sm rounded-xl border border-blue-500/30 flex flex-col items-center justify-center relative">
+                    <i class="fa-solid fa-droplet text-blue-400 text-lg mb-1"></i>
+                    <div class="orbitron text-xs font-bold text-blue-300">2</div>
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                        <span class="text-xs font-bold text-white">1</span>
+                    </div>
+                </div>
+
+                <div class="w-16 h-20 bg-gradient-to-br from-green-600/20 to-green-700/30 backdrop-blur-sm rounded-xl border border-green-500/30 flex flex-col items-center justify-center relative">
+                    <i class="fa-solid fa-mountain text-green-400 text-lg mb-1"></i>
+                    <div class="orbitron text-xs font-bold text-green-300">4</div>
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                        <span class="text-xs font-bold text-white">3</span>
+                    </div>
+                </div>
+
+                <div class="w-16 h-20 bg-gradient-to-br from-cyan-600/20 to-cyan-700/30 backdrop-blur-sm rounded-xl border border-cyan-500/30 flex flex-col items-center justify-center relative">
+                    <i class="fa-solid fa-wind text-cyan-400 text-lg mb-1"></i>
+                    <div class="orbitron text-xs font-bold text-cyan-300">3</div>
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-cyan-500 rounded-full flex items-center justify-center">
+                        <span class="text-xs font-bold text-white">2</span>
+                    </div>
+                </div>
+
+                <div class="w-16 h-20 bg-gradient-to-br from-purple-600/20 to-purple-700/30 backdrop-blur-sm rounded-xl border border-purple-500/30 flex flex-col items-center justify-center relative">
+                    <i class="fa-solid fa-magic-wand-sparkles text-purple-400 text-lg mb-1"></i>
+                    <div class="orbitron text-xs font-bold text-purple-300">5</div>
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
+                        <span class="text-xs font-bold text-white">1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="terrain-controls" class="absolute bottom-32 right-4 z-30">
+            <div class="flex flex-col gap-2">
+                <button class="w-12 h-12 bg-gradient-to-br from-blue-600/30 to-blue-700/50 backdrop-blur-sm rounded-xl border border-blue-500/30 flex items-center justify-center">
+                    <i class="fa-solid fa-water text-blue-400"></i>
+                </button>
+                <button class="w-12 h-12 bg-gradient-to-br from-orange-600/30 to-orange-700/50 backdrop-blur-sm rounded-xl border border-orange-500/30 flex items-center justify-center">
+                    <i class="fa-solid fa-fire text-orange-400"></i>
+                </button>
+                <button class="w-12 h-12 bg-gradient-to-br from-green-600/30 to-green-700/50 backdrop-blur-sm rounded-xl border border-green-500/30 flex items-center justify-center">
+                    <i class="fa-solid fa-seedling text-green-400"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            let eventIndex = 0;
+            const events = [
+                {
+                    title: "ENERGY SURGE ACTIVE",
+                    description: "Double energy regeneration for all units",
+                    icon: "fa-bolt",
+                    color: "cyan",
+                    duration: 7,
+                    className: "energy-surge"
+                },
+                {
+                    title: "WILD BEAST ROAMING",
+                    description: "Capture the neutral creature for bonus power",
+                    icon: "fa-dragon",
+                    color: "yellow",
+                    duration: 15,
+                    className: "wild-beast"
+                },
+                {
+                    title: "FORGE STORM INCOMING",
+                    description: "Arena-wide debuff affects all units",
+                    icon: "fa-cloud-bolt",
+                    color: "red",
+                    duration: 12,
+                    className: "forge-storm"
+                }
+            ];
+
+            function showNextEvent() {
+                const eventNotification = document.getElementById('event-notification');
+                const event = events[eventIndex % events.length];
+                
+                eventNotification.innerHTML = `
+                    <div class="bg-gradient-to-r from-${event.color}-600/20 to-${event.color}-700/20 backdrop-blur-sm rounded-xl p-3 border border-${event.color}-500/30 event-pulse">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-${event.color}-500 to-${event.color}-600 flex items-center justify-center ${event.className}">
+                                <i class="fa-solid ${event.icon} text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="orbitron text-xs font-bold text-${event.color}-300 mb-1">${event.title}</div>
+                                <div class="text-xs text-gray-300">${event.description}</div>
+                            </div>
+                            <div class="orbitron text-sm font-bold text-${event.color}-400 countdown-anim">${event.duration}s</div>
+                        </div>
+                    </div>
+                `;
+                
+                eventIndex++;
+            }
+
+            setInterval(showNextEvent, 8000);
+
+            const cards = document.querySelectorAll('#hand-cards > div > div');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            const terrainButtons = document.querySelectorAll('#terrain-controls button');
+            terrainButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
