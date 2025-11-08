@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena Intro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>::-webkit-scrollbar { display: none;}
+        body { font-family: 'Inter', sans-serif; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        @keyframes sigilPulse {
+            0%, 100% { opacity: 0.5; transform: scale(0.95) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.05) rotate(5deg); }
+        }
+        
+        @keyframes energyRipple {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        @keyframes countdownPulse {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+        }
+        
+        @keyframes tipFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes lightningStrike {
+            0%, 100% { opacity: 0; }
+            10%, 20%, 30% { opacity: 1; }
+            15%, 25% { opacity: 0; }
+        }
+        
+        .sigil-pulse {
+            animation: sigilPulse 2s ease-in-out infinite;
+        }
+        
+        .energy-ripple {
+            animation: energyRipple 2s ease-out infinite;
+        }
+        
+        .slide-left {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+        
+        .slide-right {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+        
+        .glow-pulse {
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        
+        .countdown-pulse {
+            animation: countdownPulse 0.5s ease-out forwards;
+        }
+        
+        .tip-fade {
+            animation: tipFadeIn 0.6s ease-out forwards;
+            animation-delay: 1s;
+            opacity: 0;
+        }
+        
+        .lightning {
+            animation: lightningStrike 1.5s ease-in-out infinite;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8b5cf6',
+                        secondary: '#ec4899',
+                        dark: '#0f0a1f',
+                        'dark-light': '#1a1332'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-b from-dark via-purple-950 to-dark text-white overflow-hidden">
+    
+    <div id="arena-intro-screen" class="relative w-full h-screen flex flex-col">
+        
+        <div id="background-effects" class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-pink-900/20"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent lightning"></div>
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent lightning" style="animation-delay: 0.3s;"></div>
+            
+            <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-500 rounded-full blur-3xl opacity-30 energy-ripple"></div>
+            <div class="absolute top-1/4 right-1/4 w-32 h-32 bg-pink-500 rounded-full blur-3xl opacity-30 energy-ripple" style="animation-delay: 0.5s;"></div>
+            <div class="absolute bottom-1/3 left-1/3 w-40 h-40 bg-blue-500 rounded-full blur-3xl opacity-20 energy-ripple" style="animation-delay: 1s;"></div>
+        </div>
+
+        <div id="split-screen-container" class="relative z-10 flex-1 flex">
+            
+            <div id="left-summoner" class="w-1/2 flex flex-col items-center justify-center relative slide-left border-r-2 border-purple-500/30">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-transparent"></div>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="relative mb-4">
+                        <div class="absolute inset-0 rounded-full bg-purple-500 blur-2xl opacity-40"></div>
+                        <div class="relative w-24 h-24 rounded-2xl overflow-hidden border-4 border-purple-500 glow-pulse">
+                            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="You" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="orbitron text-lg font-bold mb-1">YOU</div>
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-trophy text-yellow-400 text-xs"></i>
+                            <span class="text-xs text-gray-400">2,847</span>
+                        </div>
+                    </div>
+                    
+                    <div class="relative w-32 h-32">
+                        <div class="absolute inset-0 rounded-full border-4 border-purple-500/20"></div>
+                        <div class="absolute inset-2 rounded-full bg-gradient-to-br from-purple-600/40 to-purple-900/40 backdrop-blur-sm flex items-center justify-center sigil-pulse">
+                            <i class="fa-solid fa-fire text-5xl text-orange-400"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center border-2 border-white/20">
+                            <i class="fa-solid fa-wind text-xs text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 px-4 py-2 bg-purple-600/30 backdrop-blur-sm rounded-lg border border-purple-500/30">
+                        <div class="orbitron text-xs font-bold text-purple-300">FIRE • AIR</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="right-summoner" class="w-1/2 flex flex-col items-center justify-center relative slide-right">
+                <div class="absolute inset-0 bg-gradient-to-l from-pink-900/40 to-transparent"></div>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="relative mb-4">
+                        <div class="absolute inset-0 rounded-full bg-pink-500 blur-2xl opacity-40"></div>
+                        <div class="relative w-24 h-24 rounded-2xl overflow-hidden border-4 border-pink-500 glow-pulse">
+                            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Opponent" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="orbitron text-lg font-bold mb-1">STORMBREAKER</div>
+                        <div class="flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-trophy text-yellow-400 text-xs"></i>
+                            <span class="text-xs text-gray-400">2,791</span>
+                        </div>
+                    </div>
+                    
+                    <div class="relative w-32 h-32">
+                        <div class="absolute inset-0 rounded-full border-4 border-pink-500/20"></div>
+                        <div class="absolute inset-2 rounded-full bg-gradient-to-br from-blue-600/40 to-pink-900/40 backdrop-blur-sm flex items-center justify-center sigil-pulse" style="animation-delay: 0.3s;">
+                            <i class="fa-solid fa-droplet text-5xl text-blue-400"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center border-2 border-white/20">
+                            <i class="fa-solid fa-mountain text-xs text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 px-4 py-2 bg-pink-600/30 backdrop-blur-sm rounded-lg border border-pink-500/30">
+                        <div class="orbitron text-xs font-bold text-pink-300">WATER • EARTH</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="countdown-overlay" class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+            <div class="relative">
+                <div class="absolute inset-0 bg-purple-500 rounded-full blur-3xl opacity-30"></div>
+                <div id="countdown-number" class="relative orbitron text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 via-pink-400 to-purple-400"></div>
+            </div>
+        </div>
+
+        <div id="tip-overlay" class="absolute bottom-32 left-0 right-0 z-30 px-6 tip-fade">
+            <div class="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md rounded-2xl p-5 border border-purple-500/30 shadow-2xl">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                        <i class="fa-solid fa-bolt text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="orbitron text-sm font-bold text-yellow-300 mb-2">⚡ BATTLE TIP</div>
+                        <p class="text-sm text-white leading-relaxed">Summon beasts to control the battlefield. Combine elements for powerful fusion attacks!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="vs-badge" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40">
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-60"></div>
+                <div class="relative w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center border-4 border-white/20 shadow-2xl">
+                    <span class="orbitron text-2xl font-black text-white">VS</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const countdownEl = document.getElementById('countdown-number');
+            const vsEl = document.getElementById('vs-badge');
+            let count = 3;
+            
+            function updateCountdown() {
+                if (count > 0) {
+                    countdownEl.textContent = count;
+                    countdownEl.classList.remove('countdown-pulse');
+                    void countdownEl.offsetWidth;
+                    countdownEl.classList.add('countdown-pulse');
+                    count--;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    countdownEl.textContent = 'FIGHT!';
+                    countdownEl.style.fontSize = '4rem';
+                    countdownEl.classList.remove('countdown-pulse');
+                    void countdownEl.offsetWidth;
+                    countdownEl.classList.add('countdown-pulse');
+                    
+                    setTimeout(() => {
+                        countdownEl.style.opacity = '0';
+                        countdownEl.style.transition = 'opacity 0.5s';
+                    }, 1000);
+                }
+            }
+            
+            setTimeout(updateCountdown, 500);
+        });
+    </script>
+
+</body>
+</html>
