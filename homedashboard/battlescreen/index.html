@@ -19,78 +19,45 @@
             0%, 100% { opacity: 0.5; transform: scale(0.95) rotate(0deg); }
             50% { opacity: 1; transform: scale(1.05) rotate(5deg); }
         }
-        
         @keyframes energyRipple {
             0% { transform: scale(0.8); opacity: 0; }
             50% { opacity: 0.6; }
             100% { transform: scale(1.5); opacity: 0; }
         }
-        
         @keyframes countdownPulse {
             0% { transform: scale(0.5); opacity: 0; }
             50% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
-        
         @keyframes slideInLeft {
             from { transform: translateX(-100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-        
         @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-        
         @keyframes glowPulse {
             0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
             50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
         }
-        
         @keyframes tipFadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
         @keyframes lightningStrike {
             0%, 100% { opacity: 0; }
             10%, 20%, 30% { opacity: 1; }
             15%, 25% { opacity: 0; }
         }
-        
-        .sigil-pulse {
-            animation: sigilPulse 2s ease-in-out infinite;
-        }
-        
-        .energy-ripple {
-            animation: energyRipple 2s ease-out infinite;
-        }
-        
-        .slide-left {
-            animation: slideInLeft 0.8s ease-out forwards;
-        }
-        
-        .slide-right {
-            animation: slideInRight 0.8s ease-out forwards;
-        }
-        
-        .glow-pulse {
-            animation: glowPulse 2s ease-in-out infinite;
-        }
-        
-        .countdown-pulse {
-            animation: countdownPulse 0.5s ease-out forwards;
-        }
-        
-        .tip-fade {
-            animation: tipFadeIn 0.6s ease-out forwards;
-            animation-delay: 1s;
-            opacity: 0;
-        }
-        
-        .lightning {
-            animation: lightningStrike 1.5s ease-in-out infinite;
-        }
+        .sigil-pulse { animation: sigilPulse 2s ease-in-out infinite; }
+        .energy-ripple { animation: energyRipple 2s ease-out infinite; }
+        .slide-left { animation: slideInLeft 0.8s ease-out forwards; }
+        .slide-right { animation: slideInRight 0.8s ease-out forwards; }
+        .glow-pulse { animation: glowPulse 2s ease-in-out infinite; }
+        .countdown-pulse { animation: countdownPulse 0.5s ease-out forwards; }
+        .tip-fade { animation: tipFadeIn 0.6s ease-out forwards; animation-delay: 1s; opacity: 0; }
+        .lightning { animation: lightningStrike 1.5s ease-in-out infinite; }
     </style>
     <script>
         tailwind.config = {
@@ -197,16 +164,26 @@
             </div>
         </div>
 
-        <!-- responsive countdown size -->
-        <div id="countdown-overlay" class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+        <!-- countdown sits above everything else until it fades out -->
+        <div id="countdown-overlay" class="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
             <div class="relative">
                 <div class="absolute inset-0 bg-purple-500 rounded-full blur-3xl opacity-30"></div>
                 <div id="countdown-number" class="relative orbitron text-6xl sm:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 via-pink-400 to-purple-400"></div>
             </div>
         </div>
 
+        <!-- VS badge: hidden during countdown to prevent overlap, then fades/scales in -->
+        <div id="vs-badge" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 transform scale-75 opacity-0 transition-all duration-500 ease-out">
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-60"></div>
+                <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center border-4 border-white/20 shadow-2xl">
+                    <span class="orbitron text-xl sm:text-2xl font-black text-white">VS</span>
+                </div>
+            </div>
+        </div>
+
         <!-- tip overlay spacing tuned for mobile -->
-        <div id="tip-overlay" class="absolute bottom-20 sm:bottom-32 left-0 right-0 z-30 px-4 sm:px-6 tip-fade">
+        <div id="tip-overlay" class="absolute bottom-20 sm:bottom-32 left-0 right-0 z-20 px-4 sm:px-6 tip-fade">
             <div class="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md rounded-2xl p-5 border border-purple-500/30 shadow-2xl">
                 <div class="flex items-start gap-4">
                     <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-lg">
@@ -220,42 +197,40 @@
             </div>
         </div>
 
-        <!-- VS badge slightly smaller on mobile -->
-        <div id="vs-badge" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40">
-            <div class="relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-60"></div>
-                <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center border-4 border-white/20 shadow-2xl">
-                    <span class="orbitron text-xl sm:text-2xl font-black text-white">VS</span>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
         window.addEventListener('load', function() {
             const countdownEl = document.getElementById('countdown-number');
+            const countdownOverlay = document.getElementById('countdown-overlay');
+            const vsEl = document.getElementById('vs-badge');
             let count = 3;
             
             function updateCountdown() {
                 if (count > 0) {
                     countdownEl.textContent = count;
                     countdownEl.classList.remove('countdown-pulse');
-                    void countdownEl.offsetWidth;
+                    void countdownEl.offsetWidth; // reflow to retrigger animation
                     countdownEl.classList.add('countdown-pulse');
                     count--;
                     setTimeout(updateCountdown, 1000);
                 } else {
                     countdownEl.textContent = 'FIGHT!';
-                    countdownEl.style.fontSize = '2.5rem'; // comfortable on mobile; overridden visually by class size
                     countdownEl.classList.remove('countdown-pulse');
                     void countdownEl.offsetWidth;
                     countdownEl.classList.add('countdown-pulse');
-                    
+
+                    // After showing FIGHT!, fade out countdown, then reveal VS
                     setTimeout(() => {
-                        countdownEl.style.opacity = '0';
-                        countdownEl.style.transition = 'opacity 0.5s';
-                    }, 1000);
+                        countdownOverlay.style.opacity = '0';
+                        countdownOverlay.style.transition = 'opacity 500ms ease';
+                        
+                        // Show VS after the countdown fully fades
+                        setTimeout(() => {
+                            vsEl.classList.remove('opacity-0', 'scale-75');
+                            vsEl.classList.add('opacity-100', 'scale-100');
+                        }, 520);
+                    }, 900);
                 }
             }
             
