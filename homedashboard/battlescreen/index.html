@@ -123,22 +123,23 @@
     </div>
 
     <!-- Countdown: highest z, and nudged UP on mobile to avoid any collision -->
-    <div id="countdown-overlay" class="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
-      <div class="relative transform -translate-y-10 sm:translate-y-0">
-        <div class="absolute inset-0 bg-purple-500 rounded-full blur-3xl opacity-30"></div>
-        <div id="countdown-number" class="relative orbitron text-5xl sm:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 via-pink-400 to-purple-400"></div>
-      </div>
-    </div>
+   <div id="countdown-overlay" class="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+  <div class="relative transform -translate-y-10 sm:translate-y-0">
+    <div class="absolute inset-0 bg-purple-500 rounded-full blur-3xl opacity-30"></div>
+    <div id="countdown-number" class="relative orbitron text-5xl sm:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 via-pink-400 to-purple-400"></div>
+  </div>
+</div>
 
     <!-- VS badge: hidden until countdown finishes -->
-    <div id="vs-badge" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 transform scale-75 opacity-0 hidden transition-all duration-500 ease-out">
-      <div class="relative">
-        <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-60"></div>
-        <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center border-4 border-white/20 shadow-2xl">
-          <span class="orbitron text-xl sm:text-2xl font-black text-white">VS</span>
-        </div>
-      </div>
+<div id="vs-badge"
+     class="absolute inset-0 flex items-center justify-center z-30 opacity-0 hidden transition-all duration-500 ease-out scale-75">
+  <div class="relative">
+    <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-60"></div>
+    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center border-4 border-white/20 shadow-2xl">
+      <span class="orbitron text-xl sm:text-2xl font-black text-white">VS</span>
     </div>
+  </div>
+</div>
 
     <div id="tip-overlay" class="absolute bottom-20 sm:bottom-32 left-0 right-0 z-20 px-4 sm:px-6 tip-fade">
       <div class="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-md rounded-2xl p-5 border border-purple-500/30 shadow-2xl">
