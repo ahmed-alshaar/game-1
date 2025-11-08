@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>::-webkit-scrollbar { display: none;}
+        body { font-family: 'Inter', sans-serif; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        @keyframes energyPulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        @keyframes hpFlash {
+            0%, 100% { background-color: rgba(239, 68, 68, 0.2); }
+            50% { background-color: rgba(239, 68, 68, 0.6); }
+        }
+        
+        @keyframes forgeGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.8); }
+        }
+        
+        @keyframes battleEffect {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.7; }
+            100% { transform: scale(1) rotate(360deg); opacity: 1; }
+        }
+        
+        @keyframes cardHover {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+        
+        .energy-pulse {
+            animation: energyPulse 2s ease-in-out infinite;
+        }
+        
+        .hp-flash {
+            animation: hpFlash 1s ease-in-out infinite;
+        }
+        
+        .forge-glow {
+            animation: forgeGlow 3s ease-in-out infinite;
+        }
+        
+        .battle-effect {
+            animation: battleEffect 2s ease-in-out infinite;
+        }
+        
+        .card-hover:hover {
+            animation: cardHover 0.3s ease-out forwards;
+        }
+        
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border: 2px solid transparent;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8b5cf6',
+                        secondary: '#ec4899',
+                        dark: '#0f0a1f',
+                        'dark-light': '#1a1332'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-b from-dark via-purple-950 to-dark text-white overflow-hidden">
+    
+    <div id="battle-arena-screen" class="relative w-full h-screen flex flex-col">
+        
+        <div id="top-hud" class="relative z-20 px-4 pt-8 pb-2">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg overflow-hidden border-2 border-purple-500">
+                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="Player" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="h-3 bg-black/50 rounded-full overflow-hidden border border-green-500/50">
+                            <div class="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full" style="width: 78%;"></div>
+                        </div>
+                        <div class="text-xs text-green-400 orbitron font-bold mt-1">HP: 78/100</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="text-center">
+                        <div class="orbitron text-lg font-bold text-yellow-400">2:47</div>
+                        <div class="text-xs text-gray-400">TIME</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <div class="flex-1 text-right">
+                        <div class="h-3 bg-black/50 rounded-full overflow-hidden border border-red-500/50">
+                            <div class="h-full bg-gradient-to-r from-red-500 to-red-400 rounded-full hp-flash" style="width: 45%;"></div>
+                        </div>
+                        <div class="text-xs text-red-400 orbitron font-bold mt-1">HP: 45/100</div>
+                    </div>
+                    <div class="w-8 h-8 rounded-lg overflow-hidden border-2 border-pink-500">
+                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Opponent" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-bolt text-yellow-400 text-sm energy-pulse"></i>
+                        <span class="orbitron text-sm font-bold text-yellow-400">5/6</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-1">
+                    <i class="fa-solid fa-bolt text-yellow-400 text-sm energy-pulse"></i>
+                    <span class="orbitron text-sm font-bold text-yellow-400">4/6</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="left-commands" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
+            <button class="w-12 h-12 rounded-xl bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 flex items-center justify-center">
+                <i class="fa-solid fa-magic-wand-sparkles text-purple-400"></i>
+            </button>
+            <button class="w-12 h-12 rounded-xl bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 flex items-center justify-center">
+                <i class="fa-solid fa-camera text-blue-400"></i>
+            </button>
+        </div>
+
+        <div id="right-forge-meter" class="absolute right-2 top-1/2 -translate-y-1/2 z-20">
+            <div class="w-6 h-48 bg-black/50 rounded-full border border-purple-500/30 overflow-hidden forge-glow">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-purple-500 via-pink-500 to-purple-400 rounded-full transition-all duration-1000" style="height: 65%;"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-1 h-32 bg-gradient-to-t from-transparent via-white/20 to-transparent"></div>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <div class="text-xs orbitron font-bold text-purple-400">FORGE</div>
+                <div class="text-xs text-gray-400">65%</div>
+            </div>
+        </div>
+
+        <div id="battlefield" class="flex-1 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-pink-900/10 to-purple-900/20"></div>
+            
+            <div class="absolute inset-4 rounded-2xl border-2 border-purple-500/30 bg-black/20 backdrop-blur-sm overflow-hidden">
+                <div class="grid grid-cols-3 grid-rows-3 h-full gap-1 p-2">
+                    <div class="bg-purple-500/10 rounded-lg border border-purple-500/20 flex items-center justify-center relative">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center battle-effect">
+                            <i class="fa-solid fa-fire text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="bg-blue-500/10 rounded-lg border border-blue-500/20 flex items-center justify-center relative">
+                        <div class="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                            <i class="fa-solid fa-droplet text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="bg-green-500/10 rounded-lg border border-green-500/20"></div>
+                    <div class="bg-yellow-500/10 rounded-lg border border-yellow-500/20 flex items-center justify-center relative">
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
+                            <i class="fa-solid fa-wind text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="bg-purple-500/20 rounded-lg border border-purple-500/40 flex items-center justify-center relative">
+                        <div class="text-purple-400 text-2xl battle-effect">⚡</div>
+                        <div class="absolute -top-2 -right-2 text-yellow-400 text-sm animate-bounce">+15</div>
+                    </div>
+                    <div class="bg-pink-500/10 rounded-lg border border-pink-500/20 flex items-center justify-center relative">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-red-500 flex items-center justify-center battle-effect" style="animation-delay: 0.5s;">
+                            <i class="fa-solid fa-fire text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gray-500/10 rounded-lg border border-gray-500/20"></div>
+                    <div class="bg-green-500/10 rounded-lg border border-green-500/20 flex items-center justify-center relative">
+                        <div class="w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                            <i class="fa-solid fa-mountain text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="bg-cyan-500/10 rounded-lg border border-cyan-500/20"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bottom-deck" class="relative z-20 pb-6 px-4">
+            <div class="bg-black/40 backdrop-blur-sm rounded-2xl border border-purple-500/30 p-3">
+                <div class="flex gap-2 overflow-x-auto">
+                    <div class="flex-shrink-0 w-16 h-20 bg-gradient-to-br from-red-600/30 to-orange-600/30 rounded-xl border-2 border-red-500/50 flex flex-col items-center justify-center card-hover cursor-pointer">
+                        <i class="fa-solid fa-fire text-red-400 text-lg"></i>
+                        <div class="orbitron text-xs font-bold text-red-400 mt-1">3</div>
+                    </div>
+                    
+                    <div class="flex-shrink-0 w-16 h-20 bg-gradient-to-br from-blue-600/30 to-cyan-600/30 rounded-xl border-2 border-blue-500/50 flex flex-col items-center justify-center card-hover cursor-pointer">
+                        <i class="fa-solid fa-droplet text-blue-400 text-lg"></i>
+                        <div class="orbitron text-xs font-bold text-blue-400 mt-1">2</div>
+                    </div>
+                    
+                    <div class="flex-shrink-0 w-16 h-20 bg-gradient-to-br from-green-600/30 to-emerald-600/30 rounded-xl border-2 border-green-500/50 flex flex-col items-center justify-center card-hover cursor-pointer">
+                        <i class="fa-solid fa-mountain text-green-400 text-lg"></i>
+                        <div class="orbitron text-xs font-bold text-green-400 mt-1">4</div>
+                    </div>
+                    
+                    <div class="flex-shrink-0 w-16 h-20 bg-gradient-to-br from-yellow-600/30 to-orange-600/30 rounded-xl border-2 border-yellow-500/50 flex flex-col items-center justify-center card-hover cursor-pointer">
+                        <i class="fa-solid fa-wind text-yellow-400 text-lg"></i>
+                        <div class="orbitron text-xs font-bold text-yellow-400 mt-1">3</div>
+                    </div>
+                    
+                    <div class="flex-shrink-0 w-16 h-20 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-xl border-2 border-purple-500/50 flex flex-col items-center justify-center card-hover cursor-pointer">
+                        <i class="fa-solid fa-bolt text-purple-400 text-lg"></i>
+                        <div class="orbitron text-xs font-bold text-purple-400 mt-1">5</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mt-2 px-1">
+                    <div class="text-xs text-gray-400">Tap to preview • Drag to summon</div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-cards text-purple-400 text-xs"></i>
+                        <span class="text-xs orbitron font-bold text-purple-400">12</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const battleCells = document.querySelectorAll('#battlefield .grid > div');
+            
+            setInterval(() => {
+                const randomCell = battleCells[Math.floor(Math.random() * battleCells.length)];
+                if (!randomCell.querySelector('.battle-effect')) {
+                    const effectElement = document.createElement('div');
+                    effectElement.className = 'absolute text-yellow-400 text-lg animate-ping';
+                    effectElement.innerHTML = '💥';
+                    randomCell.appendChild(effectElement);
+                    
+                    setTimeout(() => {
+                        effectElement.remove();
+                    }, 1000);
+                }
+            }, 2000);
+            
+            const cards = document.querySelectorAll('#bottom-deck .card-hover');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
