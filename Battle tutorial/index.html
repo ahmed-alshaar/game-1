@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Ready</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>::-webkit-scrollbar { display: none;}
+        body { font-family: 'Inter', sans-serif; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        @keyframes forgePulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); box-shadow: 0 0 30px rgba(34, 197, 94, 0.3); }
+            50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 60px rgba(34, 197, 94, 0.8); }
+        }
+        
+        @keyframes sigilGlow {
+            0%, 100% { opacity: 0.8; transform: rotate(0deg) scale(1); }
+            50% { opacity: 1; transform: rotate(180deg) scale(1.2); }
+        }
+        
+        @keyframes energyRipple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        
+        @keyframes fusionPreview {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .forge-pulse {
+            animation: forgePulse 2s ease-in-out infinite;
+        }
+        
+        .sigil-glow {
+            animation: sigilGlow 3s ease-in-out infinite;
+        }
+        
+        .energy-ripple {
+            animation: energyRipple 1.5s ease-out infinite;
+        }
+        
+        .card-float {
+            animation: cardFloat 3s ease-in-out infinite;
+        }
+        
+        .fusion-preview {
+            animation: fusionPreview 0.5s ease-out forwards;
+        }
+        
+        .shimmer-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .drag-zone {
+            transition: all 0.3s ease;
+        }
+        
+        .drag-zone.active {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgb(34, 197, 94);
+            transform: scale(1.05);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8b5cf6',
+                        secondary: '#ec4899',
+                        dark: '#0f0a1f',
+                        'dark-light': '#1a1332'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-b from-dark via-purple-950 to-dark text-white overflow-hidden">
+    
+    <div id="forge-ready-screen" class="relative w-full h-screen flex flex-col">
+        
+        <div id="background-effects" class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-500 rounded-full blur-3xl opacity-20 forge-pulse"></div>
+            <div class="absolute top-20 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl opacity-15"></div>
+            <div class="absolute bottom-32 right-10 w-40 h-40 bg-pink-500 rounded-full blur-3xl opacity-15"></div>
+            
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 energy-ripple">
+                <div class="w-full h-full border-2 border-green-400 rounded-full"></div>
+            </div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 energy-ripple" style="animation-delay: 0.5s;">
+                <div class="w-full h-full border-2 border-green-400 rounded-full"></div>
+            </div>
+        </div>
+
+        <div id="header" class="relative z-10 pt-12 px-6">
+            <div class="flex items-center justify-between">
+                <button class="w-10 h-10 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center">
+                    <i class="fa-solid fa-arrow-left text-white/80"></i>
+                </button>
+                <div class="orbitron text-sm font-bold tracking-wider text-green-400 animate-pulse">FORGE READY</div>
+                <button class="w-10 h-10 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center">
+                    <i class="fa-solid fa-info text-white/80"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="forge-alert" class="relative z-20 mx-6 mt-6 mb-4">
+            <div class="bg-gradient-to-r from-green-600/20 to-emerald-600/20 backdrop-blur-sm rounded-2xl p-4 border border-green-500/50 shimmer-effect">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center sigil-glow">
+                        <i class="fa-solid fa-fire text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="orbitron text-lg font-bold text-green-400">FORGE READY!</div>
+                        <div class="text-sm text-green-300">Your Forge Meter is full. Fuse two beasts now!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content" class="relative z-10 flex-1 px-6">
+            
+            <div id="beast-selection" class="mb-6">
+                <div class="text-center mb-4">
+                    <h2 class="orbitron text-xl font-bold mb-2">Select Beasts to Fuse</h2>
+                    <p class="text-sm text-gray-400">Drag one beast onto another to preview fusion</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div id="beast-card-1" class="drag-zone bg-gradient-to-br from-red-600/20 to-orange-600/20 backdrop-blur-sm rounded-2xl p-4 border-2 border-red-500/30 card-float cursor-pointer">
+                        <div class="text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 rounded-xl bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center">
+                                <i class="fa-solid fa-dragon text-2xl text-white"></i>
+                            </div>
+                            <div class="orbitron text-sm font-bold text-red-400">FIRE DRAKE</div>
+                            <div class="text-xs text-gray-400 mb-2">Level 12</div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-red-300">ATK: 850</span>
+                                <span class="text-blue-300">HP: 1200</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="beast-card-2" class="drag-zone bg-gradient-to-br from-blue-600/20 to-cyan-600/20 backdrop-blur-sm rounded-2xl p-4 border-2 border-blue-500/30 card-float cursor-pointer" style="animation-delay: 0.5s;">
+                        <div class="text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+                                <i class="fa-solid fa-snowflake text-2xl text-white"></i>
+                            </div>
+                            <div class="orbitron text-sm font-bold text-blue-400">ICE WOLF</div>
+                            <div class="text-xs text-gray-400 mb-2">Level 11</div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-red-300">ATK: 720</span>
+                                <span class="text-blue-300">HP: 1400</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div id="beast-card-3" class="drag-zone bg-gradient-to-br from-green-600/20 to-emerald-600/20 backdrop-blur-sm rounded-2xl p-4 border-2 border-green-500/30 card-float cursor-pointer" style="animation-delay: 1s;">
+                        <div class="text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                                <i class="fa-solid fa-leaf text-2xl text-white"></i>
+                            </div>
+                            <div class="orbitron text-sm font-bold text-green-400">EARTH GOLEM</div>
+                            <div class="text-xs text-gray-400 mb-2">Level 10</div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-red-300">ATK: 650</span>
+                                <span class="text-blue-300">HP: 1800</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="beast-card-4" class="drag-zone bg-gradient-to-br from-purple-600/20 to-violet-600/20 backdrop-blur-sm rounded-2xl p-4 border-2 border-purple-500/30 card-float cursor-pointer" style="animation-delay: 1.5s;">
+                        <div class="text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
+                                <i class="fa-solid fa-wind text-2xl text-white"></i>
+                            </div>
+                            <div class="orbitron text-sm font-bold text-purple-400">STORM EAGLE</div>
+                            <div class="text-xs text-gray-400 mb-2">Level 13</div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-red-300">ATK: 950</span>
+                                <span class="text-blue-300">HP: 900</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="forge-meter" class="relative z-10 px-6 pb-6">
+            <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-green-500/50">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm text-gray-400">Forge Energy</span>
+                    <span class="orbitron text-sm font-bold text-green-400">100%</span>
+                </div>
+                <div class="h-3 bg-black/30 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full shimmer-effect"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="fusion-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center px-6 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-gradient-to-br from-dark-light to-purple-900 rounded-3xl p-6 border border-purple-500/30 max-w-sm w-full fusion-preview">
+            <div class="text-center mb-6">
+                <div class="orbitron text-xl font-bold text-green-400 mb-2">FUSION PREVIEW</div>
+                <p class="text-sm text-gray-400">Combining Fire Drake + Ice Wolf</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-orange-600/20 to-cyan-600/20 rounded-2xl p-6 mb-6 border border-gradient-to-r from-orange-500 to-cyan-500">
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-4 rounded-xl bg-gradient-to-br from-orange-500 via-purple-500 to-cyan-500 flex items-center justify-center shimmer-effect">
+                        <i class="fa-solid fa-fire-flame-curved text-3xl text-white"></i>
+                    </div>
+                    <div class="orbitron text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-cyan-400">STEAM WYRM</div>
+                    <div class="text-sm text-gray-400 mb-4">Level 13 (Legendary)</div>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="text-center">
+                            <div class="text-red-300 font-bold">ATK: 1150</div>
+                            <div class="text-xs text-gray-500">+300</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-blue-300 font-bold">HP: 1600</div>
+                            <div class="text-xs text-gray-500">+400</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-yellow-600/10 rounded-xl p-3 mb-6 border border-yellow-500/30">
+                <div class="text-center">
+                    <div class="text-xs text-yellow-400 font-bold mb-1">FUSION COST</div>
+                    <div class="flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-coins text-yellow-400"></i>
+                        <span class="orbitron font-bold">500 GOLD</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="cancel-fusion" class="flex-1 py-3 bg-red-600/20 backdrop-blur-sm rounded-xl border border-red-500/30 orbitron font-bold text-red-400">
+                    CANCEL
+                </button>
+                <button id="confirm-fusion" class="flex-1 py-3 bg-green-600/20 backdrop-blur-sm rounded-xl border border-green-500/30 orbitron font-bold text-green-400">
+                    FORGE!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const beastCards = document.querySelectorAll('.drag-zone');
+            const fusionModal = document.getElementById('fusion-modal');
+            const cancelBtn = document.getElementById('cancel-fusion');
+            const confirmBtn = document.getElementById('confirm-fusion');
+            
+            let selectedCards = [];
+            
+            beastCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    if (selectedCards.length < 2) {
+                        this.classList.add('active');
+                        selectedCards.push(this);
+                        
+                        if (selectedCards.length === 2) {
+                            setTimeout(() => {
+                                fusionModal.classList.remove('opacity-0', 'pointer-events-none');
+                            }, 500);
+                        }
+                    }
+                });
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                fusionModal.classList.add('opacity-0', 'pointer-events-none');
+                selectedCards.forEach(card => card.classList.remove('active'));
+                selectedCards = [];
+            });
+            
+            confirmBtn.addEventListener('click', function() {
+                fusionModal.classList.add('opacity-0', 'pointer-events-none');
+                alert('Fusion successful! Steam Wyrm added to your collection.');
+                selectedCards.forEach(card => card.classList.remove('active'));
+                selectedCards = [];
+            });
+        });
+    </script>
+
+</body>
+</html>
